@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyl.mybatisplus.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hyl.mybatisplus.entity.User">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="age" property="age" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, age, email, phone
+    </sql>
+
+    <select id="getByAge" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where age = #{age}
+    </select>
+
+    <select id="selectPageVo" resultType="com.hyl.mybatisplus.entity.User">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        <where>
+            <if test="qo.keyword !=null and qo.keyword != ''">
+                name like concat('%',#{qo.keyword},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>
